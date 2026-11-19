@@ -26,25 +26,25 @@
     button, input { font: inherit; }
     button { cursor: pointer; }
     a { color: inherit; }
-    .shell { min-height: 100vh; padding: 22px clamp(14px, 3.2vw, 44px) 48px; }
-    .topbar { max-width: 1240px; margin: 0 auto 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .shell { min-height: 100vh; padding: 14px clamp(14px, 3.2vw, 44px) 30px; }
+    .topbar { max-width: 760px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
     .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 750; letter-spacing: -.02em; }
     .brand-mark { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 11px; color: #fff; background: var(--green); font-weight: 800; font-size: 14px; }
     .top-note { color: var(--muted); font-size: 12px; display: flex; align-items: center; gap: 8px; }
     .secure-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #43a47d; }
-    .layout { max-width: 1240px; margin: auto; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(330px, .92fr); gap: 24px; align-items: start; }
+    .layout { max-width: 760px; margin: auto; display: grid; grid-template-columns: 1fr; gap: 12px; align-items: start; }
     .main-col, .side-col { display: grid; gap: 18px; }
-    .hero { position: relative; overflow: hidden; color: white; background: #174d42; border-radius: 28px; padding: 31px 32px 28px; min-height: 225px; }
+    .hero { position: relative; overflow: hidden; color: white; background: #174d42; border-radius: 22px; padding: 17px 20px; min-height: 0; }
     .hero:after { content: ""; position: absolute; width: 330px; height: 330px; border: 1px solid rgba(223, 245, 195, .25); border-radius: 50%; right: -95px; top: -130px; box-shadow: 0 0 0 32px rgba(223,245,195,.04), 0 0 0 68px rgba(223,245,195,.04); }
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #c5dfd4; font-weight: 700; }
     .eyebrow .spark { width: 19px; height: 19px; background: var(--lime); color: #174d42; border-radius: 50%; display: grid; place-items: center; font-size: 13px; letter-spacing: 0; }
-    h1 { position: relative; z-index: 1; font-size: clamp(30px, 4.3vw, 48px); line-height: 1.12; letter-spacing: -.055em; max-width: 590px; margin: 18px 0 12px; }
-    .hero p { position: relative; z-index: 1; max-width: 520px; color: #d5e6df; margin: 0; font-size: 14px; line-height: 1.7; }
-    .hero-meta { position: relative; z-index: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    h1 { position: relative; z-index: 1; font-size: clamp(24px, 4vw, 34px); line-height: 1.12; letter-spacing: -.055em; max-width: 590px; margin: 7px 0 5px; }
+    .hero p { position: relative; z-index: 1; max-width: 520px; color: #d5e6df; margin: 0; font-size: 12px; line-height: 1.5; }
+    .hero-meta { position: relative; z-index: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
     .hero-pill { border: 1px solid rgba(226,244,235,.24); background: rgba(255,255,255,.08); border-radius: 99px; padding: 7px 11px; font-size: 11px; color: #eff8f3; }
     .card { background: var(--card); border: 1px solid rgba(218, 227, 220, .8); border-radius: 22px; box-shadow: var(--shadow); }
-    .card-pad { padding: 23px; }
-    .section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .card-pad { padding: 16px; }
+    .section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 11px; }
     .section-head h2 { font-size: 18px; margin: 0; letter-spacing: -.035em; }
     .section-head p { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 6px 0 0; }
     .step-badge { flex: none; border-radius: 99px; background: var(--mint); padding: 7px 10px; color: var(--green); font-size: 11px; font-weight: 750; }
@@ -53,9 +53,9 @@
     .scenario:before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #b7c2bd; }
     .scenario.active { border-color: #a5c9bb; color: var(--green-dark); background: #f0f8f4; font-weight: 700; }
     .scenario.active:before { background: #399675; box-shadow: 0 0 0 3px #d9eee5; }
-    .scene-explain { margin-top: 13px; display: flex; gap: 9px; padding: 11px 12px; border-radius: 13px; background: #f7f8f5; color: #68736e; font-size: 11px; line-height: 1.55; }
+    .scene-explain { margin-top: 8px; color: #68736e; font-size: 10px; line-height: 1.45; }
     .scene-explain strong { color: #3c5149; }
-    .format-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 17px; }
+    .format-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 10px; }
     .select-label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
     select { width: 100%; border: 1px solid var(--line); color: var(--ink); background: #fff; border-radius: 12px; padding: 11px 12px; outline-color: #80b5a1; }
     .demo-card { overflow: hidden; }
@@ -78,6 +78,24 @@
     .quality-item small { display: block; color: #84908b; font-size: 9px; margin-top: 3px; }
     .privacy-line { margin-top: 13px; padding: 11px 12px; color: #53625c; background: #eef7f2; border-radius: 12px; font-size: 11px; line-height: 1.6; }
     .privacy-line b { color: var(--green-dark); }
+    .quality-strip { display: flex; justify-content: space-between; gap: 6px; margin-top: 8px; color: #53625c; font-size: 10px; }
+    .quality-strip span { flex: 1; text-align: center; padding: 7px 4px; border-radius: 9px; background: #f5f8f5; }
+    .quick-tools { display: flex; gap: 8px; margin-top: 9px; }
+    .quick-tools button, .quick-tools a { min-height: 38px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 9px; border: 1px solid #dcece4; border-radius: 11px; background: #f7fbf8; color: var(--green-dark); text-align: center; font-size: 11px; font-weight: 700; text-decoration: none; }
+    .side-col, footer { display: none; }
+    .tp-app { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom)); color: #fff; background: #10251f; text-align: center; }
+    .tp-header { display: flex; align-items: center; justify-content: space-between; color: #c9d8d0; font-size: 13px; }
+    .tp-state { color: #cbe599; font-size: 13px; font-weight: 700; }
+    .tp-card { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px 3px; }
+    .tp-kicker { color: #cbe599; font-size: 15px; font-weight: 750; }
+    .tp-title { max-width: 1100px; font-size: clamp(38px, 8.5vw, 94px); line-height: 1.28; font-weight: 800; letter-spacing: -.045em; text-wrap: balance; }
+    .tp-hint { max-width: 900px; color: #e0e9e3; font-size: clamp(18px, 3vw, 31px); line-height: 1.55; }
+    .tp-progress { height: 8px; width: min(100%, 900px); margin: 0 auto; border-radius: 99px; background: #34483f; overflow: hidden; }
+    .tp-progress > i { display: block; width: 0; height: 100%; background: #cbe599; }
+    .tp-controls { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .tp-controls button { min-height: 46px; padding: 0 16px; border: 1px solid #587064; border-radius: 12px; color: #fff; background: #203d32; font-weight: 700; }
+    .tp-controls .tp-primary { color: #17372d; border-color: #cbe599; background: #cbe599; }
+    .tp-small { color: #aebfb6; font-size: 12px; }
     .primary, .secondary, .danger { min-height: 45px; border: 0; border-radius: 13px; padding: 0 16px; font-weight: 750; font-size: 13px; transition: transform .15s, background .15s; }
     .primary { color: #fff; background: var(--green); box-shadow: 0 6px 18px rgba(30,110,93,.18); }
     .primary:hover { background: var(--green-dark); transform: translateY(-1px); }
@@ -85,7 +103,7 @@
     .secondary { color: var(--green-dark); background: #edf6f1; border: 1px solid #dcece4; }
     .secondary:hover { background: #e3f0e9; }
     .danger { color: white; background: #bb5148; }
-    .full { width: 100%; margin-top: 15px; }
+    .full { width: 100%; margin-top: 10px; }
     .capture-step { display: none; }
     .capture-step.visible { display: block; }
     .step-nav { display: flex; align-items: center; gap: 7px; max-width: 1240px; margin: 0 auto 18px; color: #8a9691; font-size: 11px; }
@@ -148,67 +166,67 @@
     .hidden { display: none !important; }
     .toast { position: fixed; z-index: 20; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0; pointer-events: none; border-radius: 99px; color: white; background: #172f28; padding: 11px 16px; font-size: 11px; box-shadow: 0 8px 30px rgba(0,0,0,.2); transition: .25s; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    footer { max-width: 1240px; margin: 22px auto 0; color: #8a958e; font-size: 10px; line-height: 1.6; }
+    footer { max-width: 760px; margin: 10px auto 0; color: #8a958e; font-size: 9px; line-height: 1.4; }
     footer a { color: #647970; }
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; max-width: 650px; }
-      .topbar { max-width: 650px; }
-      .step-nav { max-width: 650px; }
-      .side-col { grid-template-columns: 1fr 1fr; align-items: start; }
-    }
     @media (max-width: 560px) {
-      .shell { padding: 13px 12px 34px; }
-      .topbar { margin-bottom: 17px; }
+      .shell { padding: 10px 11px 20px; }
+      .topbar { margin-bottom: 9px; }
       .top-note { font-size: 10px; }
-      .layout { gap: 13px; }
-      .main-col, .side-col { gap: 13px; }
-      .hero { border-radius: 22px; padding: 24px 21px 21px; min-height: 214px; }
+      .layout { gap: 9px; }
+      .main-col, .side-col { gap: 9px; }
+      .hero { border-radius: 16px; padding: 13px 15px; min-height: 0; }
       .hero:after { right: -180px; }
-      h1 { font-size: 34px; max-width: 360px; margin-top: 15px; }
-      .hero p { font-size: 12px; }
-      .hero-meta { margin-top: 16px; }
-      .card { border-radius: 18px; }
-      .card-pad { padding: 17px; }
-      .side-col { grid-template-columns: 1fr; }
+      h1 { font-size: 25px; max-width: 360px; margin-top: 6px; }
+      .hero p { font-size: 11px; }
+      .hero-meta { margin-top: 7px; }
+      .card { border-radius: 15px; }
+      .card-pad { padding: 13px; }
       .step-nav { margin-bottom: 12px; font-size: 10px; gap: 5px; }
       .step-nav i { width: 18px; height: 18px; }
       .section-head h2 { font-size: 16px; }
       .section-head p { font-size: 11px; }
-      .video-frame { margin: 0 10px; }
-      .demo-top { padding: 17px 16px 11px; }
-      .demo-foot { padding: 12px 16px 15px; }
-      .quality-grid { gap: 7px; }
-      .quality-item { padding: 9px; }
-      .device-actions { flex-direction: column; }
+      .quality-strip { font-size: 9px; }
+      .quick-tools { gap: 6px; }
+      .quick-tools button, .quick-tools a { font-size: 10px; padding: 6px; }
+      .device-actions { gap: 7px; }
+      .tp-title { font-size: clamp(36px, 9vw, 72px); }
     }
   </style>
 </head>
 <body>
+  <main class="tp-app hidden" id="teleprompterApp" aria-label="近镜提词屏">
+    <div class="tp-header"><span>采集助手 · 近镜提词</span><span id="tpClock">待机</span></div>
+    <div class="tp-card">
+      <div class="tp-state" id="tpState">放在镜头旁；两台设备都点开始后，倒数结束即同步提示。</div>
+      <div class="tp-kicker" id="tpKicker">准备开始 · 共约 3 分钟</div>
+      <div class="tp-title" id="tpTitle">看向镜头，轻轻微笑，保持放松。</div>
+      <div class="tp-hint" id="tpHint">字幕会逐条自动切换，请自然表达，不必逐字照读。</div>
+    </div>
+    <div class="tp-progress"><i id="tpProgress"></i></div>
+    <div class="tp-controls" style="margin-top:16px">
+      <button class="tp-primary" id="tpStart">开始提词 · 10 秒倒数</button>
+      <button id="tpFontDown" aria-label="缩小提示文字">A−</button>
+      <button id="tpFontUp" aria-label="放大提示文字">A＋</button>
+      <button id="tpFullscreen">全屏</button>
+    </div>
+    <div class="tp-small" style="margin-top:12px">请保持此屏常亮。拍摄手机也点“开始采集”，两边倒数结束后开始录制。</div>
+  </main>
   <div class="shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">采</span><span>采集助手</span></div>
-      <div class="top-note"><span class="secure-dot"></span>素材保存在本机 · 未连接云端</div>
+      <div class="top-note"><span class="secure-dot"></span>录制素材保存在手机</div>
     </header>
-    <nav class="step-nav" aria-label="采集步骤">
-      <span class="current" id="nav1"><i>1</i> 采集方案</span><b class="arrow">›</b>
-      <span id="nav2"><i>2</i> 设备与质检</span><b class="arrow">›</b>
-      <span id="nav3"><i>3</i> 开始采集</span><b class="arrow">›</b>
-      <span id="nav4"><i>4</i> 素材交付</span>
-    </nav>
-
     <main class="layout">
       <section class="main-col">
         <section class="hero">
           <div class="eyebrow"><span class="spark">✦</span> DIGITAL HUMAN CAPTURE</div>
-          <h1>采一次，<br>让口播适配更多场景。</h1>
-          <p>手机跟着提示拍完一段连续素材。我们帮你检查画面、光线和声音，再把素材留在本机，方便交给数字人制作团队。</p>
-          <div class="hero-meta"><span class="hero-pill">约 3 分钟</span><span class="hero-pill">手机即可</span><span class="hero-pill">连续录制，不剪辑</span></div>
+          <h1>采一次，多场景复用。</h1>
+          <p>一段连续口播 · 约 3 分钟 · 录完保存到相册</p>
         </section>
 
         <section class="card card-pad capture-step visible" id="stepPlan">
           <div class="section-head">
-            <div><h2>这份素材准备怎么用？</h2><p>选择场景后，采集提示会优先覆盖这些表达方式。</p></div>
-            <span class="step-badge">01 / 04</span>
+            <div><h2>选择使用场景</h2><p>可多选；一段素材覆盖口播、情绪与轻手势。</p></div>
           </div>
           <div class="scenarios" id="scenarios">
             <button class="scenario active" aria-pressed="true">知识讲解</button>
@@ -218,19 +236,23 @@
             <button class="scenario" aria-pressed="false">竖屏短视频</button>
             <button class="scenario" aria-pressed="false">直播播报</button>
           </div>
-          <div class="scene-explain"><span>✳</span><span><strong>一次录制，多个场景复用：</strong>采集时不换背景、不换衣服、不剪辑。场景、服装和画幅后续由制作工具配置；若要保留真实服装或背景，需要单独采集对应外观。</span></div>
+          <div class="scene-explain">换装或保留不同真实背景时，再单独采集对应外观。</div>
           <div class="format-row">
             <label><span class="select-label">主要画幅</span><select id="ratio"><option>竖屏 9:16</option><option>横屏 16:9</option><option>两种都要（按竖屏留安全边距）</option></select></label>
             <label><span class="select-label">取景范围</span><select id="framing"><option>半身口播</option><option>胸像近景</option><option>全身动作</option></select></label>
           </div>
+          <div class="quality-strip"><span>▣ 手机固定</span><span>☼ 脸部明亮</span><span>◉ 环境安静</span></div>
+          <div class="quick-tools">
+            <button type="button" id="sharePrompter">▣ 分享近镜提词屏</button>
+            <a href="https://support.huaweicloud.com/usermanual-metastudio/metastudio_05_0141.html" target="_blank" rel="noopener">▶ 真人采集示范</a>
+          </div>
           <button class="primary full" id="toSetup">开始手机采集 <span aria-hidden="true">→</span></button>
-          <div class="smallprint">采集内容只用于你授权的数字人制作。请确保录制者本人知情并同意。</div>
+          <div class="smallprint">提词屏链接发到旧手机或平板，放在镜头旁使用。</div>
         </section>
 
         <section class="card card-pad capture-step" id="stepSetup">
           <div class="section-head">
             <div><h2>先把镜头和声音调好</h2><p>把手机固定在眼睛高度，脸落在参考框内，留出手势空间。</p></div>
-            <span class="step-badge">02 / 04</span>
           </div>
           <div class="setup-preview">
             <video id="setupVideo" autoplay playsinline muted></video>
@@ -246,30 +268,29 @@
             <div class="check-row" id="checkLight"><span>面部光线</span><span class="status">等待试拍</span></div>
             <div class="check-row" id="checkAudio"><span>麦克风输入</span><span class="status">等待说话</span></div>
           </div>
-          <div class="smallprint">轻量质检会检查设备分辨率、画面整体亮度和麦克风输入；脸部位置与遮挡由参考框辅助、由你确认。正式版可再接入自动人脸、虚焦和抖动检测。</div>
-          <label class="manual-row"><input type="checkbox" id="faceConfirm">我已确认：脸部无遮挡、正对镜头，手势不会出画面。</label>
-          <label class="manual-row"><input type="checkbox" id="quietConfirm">我已确认：环境安静，画面稳定，光线照在脸上且没有忽明忽暗。</label>
-          <label class="consent-row"><input type="checkbox" id="consentConfirm">我是录制者，或已获得录制者本人明确授权，同意将本次素材用于数字人制作。</label>
+          <label class="manual-row"><input type="checkbox" id="faceConfirm">我已确认构图合适、脸部无遮挡。</label>
+          <label class="consent-row"><input type="checkbox" id="consentConfirm">我是录制者，或已获得本人授权用于数字人制作。</label>
           <p class="form-message" id="setupMessage" role="status"></p>
-          <div class="capture-actions"><button class="secondary" id="backPlan">返回</button><button class="primary" id="toRecord" disabled>检查通过，进入采集</button></div>
+          <div class="capture-actions"><button class="secondary" id="backPlan">返回</button><button class="primary" id="toRecord" disabled>开始采集</button></div>
         </section>
 
         <section class="card card-pad capture-step" id="stepRecord">
-          <div class="record-head"><div><div class="rec-pill" id="recState">准备开始</div><div style="font-size:11px;color:var(--muted);margin-top:5px" id="segmentCount">第 1 段 / 共 6 段</div></div><div class="timer" id="timer">00:00</div></div>
+          <div class="record-head"><div><div class="rec-pill" id="recState">准备开始</div><div style="font-size:11px;color:var(--muted);margin-top:5px" id="segmentCount">第 1 段 / 共 6 段</div></div><div class="timer" id="timer">00:10</div></div>
           <div class="record-preview"><video id="recordVideo" autoplay playsinline muted></video><div class="record-overlay"><div class="prompt"><div class="prompt-kicker" id="promptKicker">先自然待机 · 10 秒</div><strong id="promptTitle">看向镜头，轻轻微笑，保持放松。</strong><small id="promptHint">嘴唇自然闭合，肩膀放松。接下来跟着提示继续说，不需要停机。</small></div></div></div>
           <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="progress-caption"><span id="progressLabel">准备录制</span><span>全程一镜到底</span></div>
-          <div class="capture-note"><b>采集提示</b> 会在屏幕上自动切换。保持自然，不要读屏幕外的提示；短暂停顿时闭嘴、看镜头，手势保持在画面范围内。</div>
-          <div class="capture-actions"><button class="danger" id="stopRecord">结束并保存当前素材</button><button class="secondary" id="cancelRecord">取消</button></div>
+          <div class="capture-note">提词屏同步倒数中。按提示自然表达，保持看镜头。</div>
+          <div class="capture-actions"><button class="danger" id="stopRecord" disabled>结束采集</button><button class="secondary" id="cancelRecord">取消</button></div>
         </section>
 
         <section class="card card-pad capture-step" id="stepReview">
-          <div class="section-head"><div><h2>素材已准备好</h2><p>录制内容保存在本机。确认播放无误后下载并交给数字人制作流程。</p></div><span class="step-badge">04 / 04</span></div>
+          <div class="section-head"><div><h2>素材已准备好</h2><p>确认播放无误，再保存到手机相册。</p></div></div>
           <video class="review-video" id="reviewVideo" controls playsinline></video>
           <div class="review-stats"><div class="stat"><span>录制时长</span><strong id="finalDuration">—</strong></div><div class="stat"><span>文件大小</span><strong id="finalSize">—</strong></div><div class="stat"><span>素材状态</span><strong style="color:#28785e">已就绪</strong></div></div>
-          <div class="summary-ok">✓ 已保留一段连续原始视频。交付前请完整看一遍，确认没有他人入镜、遮挡或突发噪声。</div>
-          <button class="primary full" id="downloadVideo">下载采集视频</button>
+          <div class="summary-ok">✓ 一段连续素材已就绪</div>
+          <button class="primary full" id="downloadVideo">保存到手机相册</button>
+          <button class="secondary full" id="downloadFile">保存到文件</button>
           <button class="secondary full" id="newCapture">重新采集</button>
-          <div class="smallprint">本原型不会上传视频。正式产品接入数字人训练平台时，应另行展示上传目标、用途和保存期限。</div>
+          <div class="smallprint">系统打开保存菜单后，选择“存储视频”或“保存到相册”。</div>
         </section>
       </section>
 
@@ -310,10 +331,10 @@
     (() => {
       const $ = (id) => document.getElementById(id);
       const steps = [$("stepPlan"), $("stepSetup"), $("stepRecord"), $("stepReview")];
-      const navs = [$("nav1"), $("nav2"), $("nav3"), $("nav4")];
+      const navs = [];
       const scenarios = [...document.querySelectorAll(".scenario")];
       let stream = null, recorder = null, chunks = [], audioContext = null, analyser = null;
-      let startAt = 0, elapsed = 0, ticker = null, promptTimer = null, blobUrl = null, finalBlob = null;
+      let startAt = 0, elapsed = 0, ticker = null, promptTimer = null, countdownTimer = null, blobUrl = null, finalBlob = null;
       let videoLightTimer = null, audioTimer = null, lightOkay = false, audioOkay = false;
       const totalSeconds = 180;
       const prompts = [
@@ -324,6 +345,60 @@
         { start: 140, end: 165, kicker: "轻手势 · 25 秒", title: "继续说话，配合一两个幅度自然的小手势。", hint: "手不要遮住脸，动作留在画面范围内。" },
         { start: 165, end: 180, kicker: "结束待机 · 15 秒", title: "说完后停下来，恢复自然表情并看向镜头。", hint: "保持安静，嘴唇闭合，不要马上移开视线。" }
       ];
+
+      if (new URLSearchParams(location.search).get("screen") === "prompt") {
+        document.title = "近镜提词屏 · 数字人采集";
+        document.querySelector(".shell").classList.add("hidden");
+        $("teleprompterApp").classList.remove("hidden");
+        let tpTimer = null, tpCountdown = null, tpStartAt = 0, tpWakeLock = null, tpScale = 1;
+        const tpStartButton = $("tpStart");
+        function paintPrompt(seconds) {
+          const index = Math.max(0, prompts.findIndex(p => seconds >= p.start && seconds < p.end));
+          const prompt = prompts[index];
+          $("tpKicker").textContent = prompt.kicker;
+          $("tpTitle").textContent = prompt.title;
+          $("tpHint").textContent = prompt.hint;
+          $("tpClock").textContent = `${String(Math.floor(seconds / 60)).padStart(2,"0")}:${String(seconds % 60).padStart(2,"0")}`;
+          $("tpProgress").style.width = `${Math.min(100, seconds / totalSeconds * 100)}%`;
+          $("tpState").textContent = `第 ${index + 1} / ${prompts.length} 条提示`;
+        }
+        async function keepScreenOn() {
+          try { if ("wakeLock" in navigator) tpWakeLock = await navigator.wakeLock.request("screen"); } catch (_) {}
+        }
+        tpStartButton.addEventListener("click", async () => {
+          if (tpTimer || tpCountdown) return;
+          tpStartButton.disabled = true;
+          let left = 10;
+          $("tpState").textContent = "两边倒数结束后开始提示";
+          $("tpKicker").textContent = "请站好位置";
+          $("tpTitle").textContent = "10";
+          $("tpHint").textContent = "倒数结束后，第一条提示会自动出现。";
+          await keepScreenOn();
+          tpCountdown = setInterval(() => {
+            left -= 1;
+            if (left > 0) { $("tpTitle").textContent = String(left); return; }
+            clearInterval(tpCountdown); tpCountdown = null; tpStartAt = Date.now();
+            paintPrompt(0);
+            tpTimer = setInterval(() => {
+              const seconds = Math.floor((Date.now() - tpStartAt) / 1000);
+              if (seconds >= totalSeconds) {
+                clearInterval(tpTimer); tpTimer = null;
+                $("tpState").textContent = "提示完成"; $("tpTitle").textContent = "采集完成";
+                $("tpHint").textContent = "可以结束拍摄并保存素材了。"; $("tpStart").disabled = false;
+                $("tpStart").textContent = "重新开始提示"; $("tpProgress").style.width = "100%";
+                if (tpWakeLock) { tpWakeLock.release().catch(() => {}); tpWakeLock = null; }
+                return;
+              }
+              paintPrompt(seconds);
+            }, 200);
+          }, 1000);
+        });
+        $("tpFontDown").addEventListener("click", () => { tpScale = Math.max(.72, tpScale - .12); $("tpTitle").style.fontSize = `clamp(${38 * tpScale}px, ${8.5 * tpScale}vw, ${94 * tpScale}px)`; });
+        $("tpFontUp").addEventListener("click", () => { tpScale = Math.min(1.6, tpScale + .12); $("tpTitle").style.fontSize = `clamp(${38 * tpScale}px, ${8.5 * tpScale}vw, ${94 * tpScale}px)`; });
+        $("tpFullscreen").addEventListener("click", async () => { try { await document.documentElement.requestFullscreen(); } catch (_) {} });
+        document.addEventListener("visibilitychange", () => { if (!document.hidden && tpTimer) keepScreenOn(); });
+        return;
+      }
 
       function toast(msg) {
         const el = $("toast"); el.textContent = msg; el.classList.add("show");
@@ -341,7 +416,7 @@
         if (stream) stream.getTracks().forEach(t => t.stop());
         stream = null;
         if (audioContext) { audioContext.close().catch(() => {}); audioContext = null; analyser = null; }
-        clearInterval(videoLightTimer); clearInterval(audioTimer);
+        clearInterval(videoLightTimer); clearInterval(audioTimer); clearInterval(countdownTimer); countdownTimer = null;
       }
       scenarios.forEach(button => button.addEventListener("click", () => {
         const on = !button.classList.contains("active");
@@ -350,6 +425,15 @@
 
       $("toSetup").addEventListener("click", () => showStep(1));
       $("backPlan").addEventListener("click", () => showStep(0));
+      $("sharePrompter").addEventListener("click", async () => {
+        const url = `${location.origin}${location.pathname}?screen=prompt`;
+        if (navigator.share) {
+          try { await navigator.share({ title: "数字人采集近镜提词屏", text: "在旧手机或平板打开，放在拍摄镜头旁。", url }); return; }
+          catch (e) { if (e.name === "AbortError") return; }
+        }
+        try { await navigator.clipboard.writeText(url); toast("提词屏链接已复制，请发到另一台设备"); }
+        catch (_) { window.prompt("复制提词屏链接，发到旧手机或平板：", url); }
+      });
       $("connectCamera").addEventListener("click", async () => {
         const msg = $("setupMessage"); msg.textContent = "";
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -405,14 +489,14 @@
         $("connectCamera").disabled = false; $("connectCamera").textContent = "重新连接设备";
         checkRow("checkCam", false, "等待连接"); checkRow("checkLight", false, "等待试拍"); checkRow("checkAudio", false, "等待说话");
       });
-      ["faceConfirm", "quietConfirm", "consentConfirm"].forEach(id => $(id).addEventListener("change", maybeEnableRecord));
+      ["faceConfirm", "consentConfirm"].forEach(id => $(id).addEventListener("change", maybeEnableRecord));
       function maybeEnableRecord() {
         const connected = !!stream;
-        const manual = $("faceConfirm").checked && $("quietConfirm").checked && $("consentConfirm").checked;
+        const manual = $("faceConfirm").checked && $("consentConfirm").checked;
         const okay = connected && manual;
         $("toRecord").disabled = !okay;
-        if (connected && !manual) $("setupMessage").textContent = "再确认画面、环境和录制授权，即可继续。";
-        else if (okay) $("setupMessage").textContent = "设备已连接。继续前请将手机固定好，录制过程中不要移动手机。";
+        if (connected && !manual) $("setupMessage").textContent = "确认构图与授权后即可继续。";
+        else if (okay) $("setupMessage").textContent = "设备已就绪。两台屏幕准备好后开始采集。";
       }
       $("toRecord").addEventListener("click", () => {
         if (!stream) return;
@@ -428,15 +512,25 @@
         $("progressLabel").textContent = `已完成 ${Math.floor(sec / totalSeconds * 100)}%`;
       }
       function startRecording() {
-        chunks = []; elapsed = 0; startAt = Date.now(); finalBlob = null;
-        const mime = ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/mp4"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+        if (!stream || countdownTimer) return;
+        chunks = []; elapsed = 0; finalBlob = null;
         if (!window.MediaRecorder) { $("setupMessage").textContent = "此浏览器暂不支持本地视频录制。请使用较新的 Chrome、Edge 或 Safari。"; showStep(1); return; }
+        let left = 10;
+        $("recState").textContent = "10 秒倒数 · 请站好位置"; $("timer").textContent = "00:10"; $("stopRecord").disabled = true;
+        countdownTimer = setInterval(() => {
+          left -= 1; $("timer").textContent = `00:${String(left).padStart(2,"0")}`;
+          if (left <= 0) { clearInterval(countdownTimer); countdownTimer = null; beginRecording(); }
+        }, 1000);
+      }
+      function beginRecording() {
+        startAt = Date.now();
+        const mime = ["video/mp4", "video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
         try {
           recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
           recorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
           recorder.onerror = () => toast("录制发生问题，请重试并确认设备空间充足");
           recorder.onstop = finishRecording;
-          recorder.start(1000); $("recState").textContent = "正在录制"; setPrompt(0);
+          recorder.start(1000); $("recState").textContent = "正在录制"; $("stopRecord").disabled = false; setPrompt(0);
           ticker = setInterval(() => {
             elapsed = Math.floor((Date.now() - startAt) / 1000);
             const mm = String(Math.floor(elapsed / 60)).padStart(2, "0"), ss = String(elapsed % 60).padStart(2, "0");
@@ -466,19 +560,34 @@
       });
       $("cancelRecord").addEventListener("click", () => {
         if (recorder && recorder.state !== "inactive") { recorder.onstop = null; recorder.stop(); }
-        if (ticker) clearInterval(ticker); ticker = null; releaseStream(); showStep(1); toast("本次录制已取消");
+        if (ticker) clearInterval(ticker); ticker = null; releaseStream(); $("stopRecord").disabled = true; showStep(1); toast("本次录制已取消");
       });
-      $("downloadVideo").addEventListener("click", () => {
+      function downloadVideoFile() {
         if (!finalBlob || !blobUrl) return;
         const ext = finalBlob.type.includes("mp4") ? "mp4" : "webm";
         const a = document.createElement("a"); a.href = blobUrl; a.download = `数字人采集素材_${new Date().toISOString().slice(0,10)}.${ext}`;
-        document.body.appendChild(a); a.click(); a.remove(); toast("已开始下载到本机");
+        document.body.appendChild(a); a.click(); a.remove();
+      }
+      $("downloadVideo").addEventListener("click", async () => {
+        if (!finalBlob || !blobUrl) return;
+        const ext = finalBlob.type.includes("mp4") ? "mp4" : "webm";
+        const file = new File([finalBlob], `数字人采集素材_${new Date().toISOString().slice(0,10)}.${ext}`, { type: finalBlob.type || (ext === "mp4" ? "video/mp4" : "video/webm") });
+        try {
+          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ title: "数字人采集素材", files: [file] });
+            toast("请选择“存储视频”或“保存到相册”"); return;
+          }
+        } catch (e) { if (e.name === "AbortError") return; }
+        downloadVideoFile(); toast("已下载素材，请在手机下载项中保存到相册");
       });
+      $("downloadFile").addEventListener("click", () => { downloadVideoFile(); toast("已开始保存到手机文件"); });
       $("newCapture").addEventListener("click", () => {
+        if (blobUrl) { URL.revokeObjectURL(blobUrl); blobUrl = null; }
+        finalBlob = null; $("reviewVideo").removeAttribute("src"); $("stopRecord").disabled = true;
         releaseStream(); $("connectCamera").disabled = false; $("connectCamera").textContent = "连接摄像头与麦克风";
         $("cameraPlaceholder").classList.remove("hidden"); $("setupVideo").style.display = "none"; $("faceGuide").style.display = "none"; $("cameraTag").style.display = "none";
         ["checkCam", "checkLight", "checkAudio"].forEach(id => checkRow(id, false, "等待检查"));
-        ["faceConfirm", "quietConfirm", "consentConfirm"].forEach(id => $(id).checked = false);
+        ["faceConfirm", "consentConfirm"].forEach(id => $(id).checked = false);
         $("toRecord").disabled = true; showStep(0);
       });
       window.addEventListener("pagehide", releaseStream);
