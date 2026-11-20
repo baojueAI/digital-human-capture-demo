@@ -304,15 +304,14 @@
           <a class="video-file" id="videoFileLink" href="#" download aria-disabled="true">
             <span class="video-file-icon" id="videoFileType">视频</span>
             <span class="video-file-info"><strong class="video-file-name" id="videoFileName">录制完成后生成文件</strong><small class="video-file-meta" id="videoFileMeta">等待视频整理</small></span>
-            <span class="video-file-download">下载 ↓</span>
+            <span class="video-file-download" id="videoFileDownload">下载 ↓</span>
           </a>
           <div class="summary-ok">✓ 一段连续素材已就绪</div>
           <button class="primary full" id="downloadVideo">分享或保存视频</button>
           <div class="save-actions">
-            <button class="secondary hidden" id="saveFilePicker">保存到手机文件</button>
             <button class="secondary" id="newCapture">重新采集</button>
           </div>
-          <div class="save-help" id="saveHelp" role="status" aria-live="polite">上方显示生成的视频文件。点文件卡片可下载到手机；也可用分享按钮发送。</div>
+          <div class="save-help" id="saveHelp" role="status" aria-live="polite">录制完成后，点文件卡片保存或下载，也可通过分享按钮转发。</div>
         </section>
       </section>
 
@@ -356,7 +355,7 @@
       const navs = [];
       const scenarios = [...document.querySelectorAll(".scenario")];
       let stream = null, recorder = null, chunks = [], audioContext = null, analyser = null;
-      let startAt = 0, elapsed = 0, ticker = null, promptTimer = null, countdownTimer = null, blobUrl = null, finalBlob = null;
+      let startAt = 0, elapsed = 0, ticker = null, promptTimer = null, countdownTimer = null, blobUrl = null, finalBlob = null, useBrowserDownloadFallback = false, shareWasCancelled = false;
       let videoLightTimer = null, audioTimer = null, lightOkay = false, audioOkay = false;
       const totalSeconds = 180;
       const prompts = [
@@ -546,6 +545,10 @@
         const systemBrowserDownload = !isWechat && /Chrome|CriOS|Safari|Edg|Firefox/i.test(ua);
         return typeof window.showSaveFilePicker === "function" || typeof navigator.share === "function" || systemBrowserDownload;
       }
+      function isMobileDevice() {
+        const ua = navigator.userAgent || "";
+        return /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      }
       function canShareVideoType() {
         // canShare() is advisory and can be overly restrictive for native video types.
         // Attempt the actual user-initiated share whenever the browser exposes share().
@@ -598,8 +601,9 @@
         $("finalSize").textContent = finalBlob.size > 1024 * 1024 ? `${(finalBlob.size / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(finalBlob.size / 1024))} KB`;
         const normalizedMime = finalBlob.type.split(";")[0].trim().toLowerCase();
         updateSaveButtons();
-        if (normalizedMime !== "video/mp4") showSaveHelp("已生成 WebM 视频文件。点上方文件卡片下载，或通过分享按钮发送；部分相册不支持 WebM。");
-        else showSaveHelp("已生成 MP4 视频文件。点上方文件卡片下载到手机，或通过分享按钮发送给其他应用。");
+        const fileAction = isMobileDevice() ? "点上方文件卡片打开系统保存/分享。" : "点上方文件卡片下载。";
+        if (normalizedMime !== "video/mp4") showSaveHelp(`已生成 WebM 视频文件。${fileAction}部分相册不支持 WebM。`);
+        else showSaveHelp(`已生成 MP4 视频文件。${fileAction}`);
         $("progressFill").style.width = "100%"; releaseStream(); showStep(3);
       }
       $("stopRecord").addEventListener("click", () => {
@@ -621,19 +625,22 @@
         const file = getFinalFile();
         const shareable = canShareVideoType();
         const hasFilePicker = typeof window.showSaveFilePicker === "function";
-        $("downloadVideo").disabled = !shareable;
-        $("downloadVideo").textContent = shareable ? "分享或保存视频" : "当前浏览器不支持系统分享";
-        $("saveFilePicker").classList.toggle("hidden", !hasFilePicker);
+        const canSaveOnMobile = isMobileDevice() && hasFilePicker;
+        $("downloadVideo").disabled = !shareable && !canSaveOnMobile;
+        $("downloadVideo").textContent = shareable ? "分享或保存视频" : canSaveOnMobile ? "保存到手机文件" : "当前浏览器不支持系统分享";
         $("videoFileLink").href = blobUrl || "#";
         $("videoFileLink").download = file.name;
         $("videoFileLink").setAttribute("aria-disabled", finalBlob ? "false" : "true");
         $("videoFileName").textContent = file.name;
         $("videoFileType").textContent = file.type === "video/mp4" ? "MP4" : "WEBM";
-        $("videoFileMeta").textContent = `${file.type === "video/mp4" ? "MP4 视频" : "WebM 视频"} · ${$("finalSize").textContent} · 点按下载`;
+        const mobileSaveRoute = isMobileDevice() && (hasFilePicker || shareable) && !useBrowserDownloadFallback;
+        $("videoFileDownload").textContent = mobileSaveRoute ? "保存/分享 ↗" : "下载 ↓";
+        $("videoFileMeta").textContent = `${file.type === "video/mp4" ? "MP4 视频" : "WebM 视频"} · ${$("finalSize").textContent} · ${mobileSaveRoute ? "点按保存或分享" : "点按下载"}`;
         return { file, shareable, hasFilePicker };
       }
       async function shareFinalVideo(destination) {
         if (!finalBlob) return false;
+        shareWasCancelled = false;
         const { file, shareable } = updateSaveButtons();
         if (!shareable) {
           showSaveHelp("当前浏览器不支持把视频交给手机系统处理。请在开始录制前切换到 Safari 或 Chrome；录好的视频仍保留在本页。");
@@ -644,19 +651,28 @@
           showSaveHelp(destination === "photos" ? "分享菜单已打开。可选择“存储视频/保存到照片”，也可选微信等应用发送视频。" : "分享菜单已打开。选择“存储到文件”或其他应用，即可转存/发送视频。");
           return true;
         } catch (e) {
-          if (e.name === "AbortError") showSaveHelp("分享已取消。你可以再次尝试分享，或点“下载视频文件”保存到手机。");
-          else showSaveHelp(typeof window.showSaveFilePicker === "function" ? "手机系统没有接受这段视频。请用下方系统文件保存窗口，或点“下载视频文件”。" : "手机系统没有接受这段视频。可点“下载视频文件”保存到手机；若下载无响应，请在系统浏览器中打开本页后重新录制。");
+          if (e.name === "AbortError") { shareWasCancelled = true; showSaveHelp("分享已取消。可以再次点文件卡片，或重新打开分享菜单。"); }
+          else showSaveHelp("手机系统没有接收这段视频。可以重新打开分享菜单，或再试文件卡片。");
           return false;
         }
       }
       $("downloadVideo").addEventListener("click", async () => {
-        if (await shareFinalVideo("photos")) toast("分享菜单已打开，可保存或发送视频");
+        if (isMobileDevice() && typeof navigator.share !== "function" && typeof window.showSaveFilePicker === "function") {
+          await saveFileFromCard();
+        } else if (await shareFinalVideo("photos")) toast("分享菜单已打开，可保存或发送视频");
       });
-      $("videoFileLink").addEventListener("click", () => showSaveHelp("已将上方视频文件交给浏览器下载。请确认手机出现下载提示，或在“下载/文件”中看到该文件后再离开页面。"));
-      $("saveFilePicker").addEventListener("click", async () => {
+      async function saveFileFromCard() {
         if (!finalBlob) return;
-        if (typeof window.showSaveFilePicker === "function") {
-          const file = getFinalFile();
+        const { file, shareable } = updateSaveButtons();
+        if (!useBrowserDownloadFallback && isMobileDevice() && shareable) {
+          if (await shareFinalVideo("files")) return;
+          if (shareWasCancelled) return;
+          useBrowserDownloadFallback = true;
+          updateSaveButtons();
+          showSaveHelp("手机系统没有接收这段视频。再点文件卡片会尝试浏览器下载。");
+          return;
+        }
+        if (!useBrowserDownloadFallback && isMobileDevice() && typeof window.showSaveFilePicker === "function") {
           try {
             const handle = await window.showSaveFilePicker({
               suggestedName: file.name,
@@ -666,25 +682,36 @@
             await writable.write(finalBlob);
             await writable.close();
             showSaveHelp(`已保存到你选择的位置：${file.name}`); toast("视频文件已保存");
+            return;
           } catch (e) {
-            if (e.name === "AbortError") { showSaveHelp("保存已取消，视频仍保留在本页。再次点击可重新选择位置。"); return; }
-            showSaveHelp("手机文件保存窗口未能完成。视频仍保留在本页；请确认浏览器允许本页调用系统保存窗口，或使用系统分享菜单。");
+            if (e.name === "AbortError") { showSaveHelp("保存已取消。再点文件卡片可重试，或选择分享视频。"); return; }
+            useBrowserDownloadFallback = true;
+            updateSaveButtons();
+            showSaveHelp("手机系统保存窗口未打开。再点文件卡片会改用浏览器下载。");
+            return;
           }
-          return;
         }
-        showSaveHelp("此浏览器没有系统文件选择窗口。请使用“下载视频文件”或“分享或保存视频”。");
+      }
+      $("videoFileLink").addEventListener("click", event => {
+        if (!useBrowserDownloadFallback && isMobileDevice() && (typeof window.showSaveFilePicker === "function" || typeof navigator.share === "function")) {
+          event.preventDefault();
+          saveFileFromCard();
+        } else {
+          showSaveHelp("已将视频文件交给浏览器下载。请确认手机出现下载提示，或在“下载/文件”中看到该文件后再离开页面。");
+        }
       });
       $("newCapture").addEventListener("click", () => {
         if (blobUrl) { URL.revokeObjectURL(blobUrl); blobUrl = null; }
         finalBlob = null; $("reviewVideo").removeAttribute("src"); $("stopRecord").disabled = true;
         releaseStream(); $("connectCamera").disabled = false; $("connectCamera").textContent = "连接摄像头与麦克风";
+        useBrowserDownloadFallback = false;
         $("cameraPlaceholder").classList.remove("hidden"); $("setupVideo").style.display = "none"; $("faceGuide").style.display = "none"; $("cameraTag").style.display = "none";
         ["checkCam", "checkLight", "checkAudio"].forEach(id => checkRow(id, false, "等待检查"));
         ["faceConfirm", "consentConfirm"].forEach(id => $(id).checked = false);
-        $("downloadVideo").disabled = false; $("downloadVideo").textContent = "分享或保存视频";
-        $("saveFilePicker").classList.add("hidden"); $("videoFileLink").href = "#"; $("videoFileLink").setAttribute("aria-disabled", "true");
-        $("videoFileType").textContent = "视频"; $("videoFileName").textContent = "录制完成后生成文件"; $("videoFileMeta").textContent = "等待视频整理";
-        showSaveHelp("上方显示生成的视频文件。点文件卡片可下载到手机；也可用分享按钮发送。");
+        $("downloadVideo").disabled = false; $("downloadVideo").textContent = "分享或保存视频"; shareWasCancelled = false;
+        $("videoFileLink").href = "#"; $("videoFileLink").setAttribute("aria-disabled", "true");
+        $("videoFileType").textContent = "视频"; $("videoFileName").textContent = "录制完成后生成文件"; $("videoFileMeta").textContent = "等待视频整理"; $("videoFileDownload").textContent = "下载 ↓";
+        showSaveHelp("录制完成后，点文件卡片保存或下载，也可通过分享按钮转发。");
         $("toRecord").disabled = true; showStep(0);
       });
       if (/MicroMessenger/i.test(navigator.userAgent || "")) $("wechatNotice").classList.remove("hidden");
