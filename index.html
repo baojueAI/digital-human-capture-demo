@@ -533,7 +533,7 @@
         if (!navigator.share || !navigator.canShare) return false;
         const normalizedMime = (mime || "video/webm").split(";")[0].trim().toLowerCase();
         const ext = normalizedMime === "video/mp4" ? "mp4" : "webm";
-        try { return navigator.canShare({ files: [new File([new Blob([""])], `capture.${ext}`, { type: normalizedMime })] }); }
+        try { return navigator.canShare({ files: [new File([new Blob(["x"])], `capture.${ext}`, { type: normalizedMime })] }); }
         catch (e) { return false; }
       }
       function startRecording() {
@@ -652,7 +652,7 @@
           }
           return;
         }
-        else if (await shareFinalVideo("files")) toast("已交给手机系统，请在菜单中选存储到文件");
+        if (await shareFinalVideo("files")) toast("已交给手机系统，请在菜单中选存储到文件");
       });
       $("newCapture").addEventListener("click", () => {
         if (blobUrl) { URL.revokeObjectURL(blobUrl); blobUrl = null; }
