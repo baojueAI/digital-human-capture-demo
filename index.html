@@ -530,11 +530,9 @@
           .find(type => MediaRecorder.isTypeSupported(type)) || "";
       }
       function canShareVideoType(mime) {
-        if (!navigator.share || !navigator.canShare) return false;
-        const normalizedMime = (mime || "video/webm").split(";")[0].trim().toLowerCase();
-        const ext = normalizedMime === "video/mp4" ? "mp4" : "webm";
-        try { return navigator.canShare({ files: [new File([new Blob(["x"])], `capture.${ext}`, { type: normalizedMime })] }); }
-        catch (e) { return false; }
+        // canShare() is advisory and can be overly restrictive for native video types.
+        // Attempt the actual user-initiated share whenever the browser exposes share().
+        return typeof navigator.share === "function";
       }
       function startRecording() {
         if (!stream || countdownTimer) return;
