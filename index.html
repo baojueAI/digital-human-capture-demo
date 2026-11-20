@@ -162,8 +162,13 @@
     .save-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .save-actions button { width: 100%; margin-top: 8px; }
     .save-actions #newCapture { grid-column: 1 / -1; }
-    .download-link { display: flex; align-items: center; justify-content: center; text-decoration: none; }
-    .download-link[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+    .video-file { display: flex; align-items: center; gap: 11px; margin: 12px 0 4px; padding: 12px; border: 1px solid #dce8df; border-radius: 14px; background: #f8faf7; color: var(--ink); text-decoration: none; }
+    .video-file[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+    .video-file-icon { flex: none; width: 45px; height: 45px; display: grid; place-items: center; border-radius: 11px; background: #e5f2ed; color: var(--green-dark); font-size: 10px; font-weight: 800; }
+    .video-file-info { min-width: 0; flex: 1; }
+    .video-file-name { display: block; overflow-wrap: anywhere; font-size: 11px; font-weight: 750; }
+    .video-file-meta { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .video-file-download { flex: none; color: var(--green); font-size: 11px; font-weight: 750; }
     .save-help { padding: 10px 12px; border-radius: 12px; background: #f6f8f5; color: #59665f; font-size: 11px; line-height: 1.55; margin-top: 10px; }
     .save-help:empty { display: none; }
     .ref-list { display: grid; gap: 9px; }
@@ -296,14 +301,18 @@
           <div class="section-head"><div><h2>视频已准备好</h2><p>可下载到手机，也可分享给其他应用。</p></div></div>
           <video class="review-video" id="reviewVideo" controls playsinline></video>
           <div class="review-stats"><div class="stat"><span>录制时长</span><strong id="finalDuration">—</strong></div><div class="stat"><span>文件大小</span><strong id="finalSize">—</strong></div><div class="stat"><span>素材状态</span><strong style="color:#28785e">已就绪</strong></div></div>
+          <a class="video-file" id="videoFileLink" href="#" download aria-disabled="true">
+            <span class="video-file-icon" id="videoFileType">视频</span>
+            <span class="video-file-info"><strong class="video-file-name" id="videoFileName">录制完成后生成文件</strong><small class="video-file-meta" id="videoFileMeta">等待视频整理</small></span>
+            <span class="video-file-download">下载 ↓</span>
+          </a>
           <div class="summary-ok">✓ 一段连续素材已就绪</div>
           <button class="primary full" id="downloadVideo">分享或保存视频</button>
           <div class="save-actions">
             <button class="secondary hidden" id="saveFilePicker">保存到手机文件</button>
-            <a class="secondary download-link" id="downloadFile" href="#" download aria-disabled="true">下载视频文件</a>
             <button class="secondary" id="newCapture">重新采集</button>
           </div>
-          <div class="save-help" id="saveHelp" role="status" aria-live="polite">可通过系统分享发送视频，也可直接下载视频文件到手机。</div>
+          <div class="save-help" id="saveHelp" role="status" aria-live="polite">上方显示生成的视频文件。点文件卡片可下载到手机；也可用分享按钮发送。</div>
         </section>
       </section>
 
@@ -589,8 +598,8 @@
         $("finalSize").textContent = finalBlob.size > 1024 * 1024 ? `${(finalBlob.size / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(finalBlob.size / 1024))} KB`;
         const normalizedMime = finalBlob.type.split(";")[0].trim().toLowerCase();
         updateSaveButtons();
-        if (normalizedMime !== "video/mp4") showSaveHelp("已准备好 WebM 视频。可点“下载视频文件”保存到手机，或通过系统分享发送给支持 WebM 的应用；部分相册不支持 WebM。");
-        else showSaveHelp("视频已准备好。可通过“分享或保存视频”选择相册、微信等应用，也可直接下载视频文件到手机。");
+        if (normalizedMime !== "video/mp4") showSaveHelp("已生成 WebM 视频文件。点上方文件卡片下载，或通过分享按钮发送；部分相册不支持 WebM。");
+        else showSaveHelp("已生成 MP4 视频文件。点上方文件卡片下载到手机，或通过分享按钮发送给其他应用。");
         $("progressFill").style.width = "100%"; releaseStream(); showStep(3);
       }
       $("stopRecord").addEventListener("click", () => {
@@ -615,9 +624,12 @@
         $("downloadVideo").disabled = !shareable;
         $("downloadVideo").textContent = shareable ? "分享或保存视频" : "当前浏览器不支持系统分享";
         $("saveFilePicker").classList.toggle("hidden", !hasFilePicker);
-        $("downloadFile").href = blobUrl || "#";
-        $("downloadFile").download = file.name;
-        $("downloadFile").setAttribute("aria-disabled", finalBlob ? "false" : "true");
+        $("videoFileLink").href = blobUrl || "#";
+        $("videoFileLink").download = file.name;
+        $("videoFileLink").setAttribute("aria-disabled", finalBlob ? "false" : "true");
+        $("videoFileName").textContent = file.name;
+        $("videoFileType").textContent = file.type === "video/mp4" ? "MP4" : "WEBM";
+        $("videoFileMeta").textContent = `${file.type === "video/mp4" ? "MP4 视频" : "WebM 视频"} · ${$("finalSize").textContent} · 点按下载`;
         return { file, shareable, hasFilePicker };
       }
       async function shareFinalVideo(destination) {
@@ -640,7 +652,7 @@
       $("downloadVideo").addEventListener("click", async () => {
         if (await shareFinalVideo("photos")) toast("分享菜单已打开，可保存或发送视频");
       });
-      $("downloadFile").addEventListener("click", () => showSaveHelp("已将视频文件交给浏览器下载。请确认手机出现下载提示，或在“下载/文件”中看到视频后再离开页面。"));
+      $("videoFileLink").addEventListener("click", () => showSaveHelp("已将上方视频文件交给浏览器下载。请确认手机出现下载提示，或在“下载/文件”中看到该文件后再离开页面。"));
       $("saveFilePicker").addEventListener("click", async () => {
         if (!finalBlob) return;
         if (typeof window.showSaveFilePicker === "function") {
@@ -670,8 +682,9 @@
         ["checkCam", "checkLight", "checkAudio"].forEach(id => checkRow(id, false, "等待检查"));
         ["faceConfirm", "consentConfirm"].forEach(id => $(id).checked = false);
         $("downloadVideo").disabled = false; $("downloadVideo").textContent = "分享或保存视频";
-        $("saveFilePicker").classList.add("hidden"); $("downloadFile").href = "#"; $("downloadFile").setAttribute("aria-disabled", "true");
-        showSaveHelp("可通过系统分享发送视频，也可直接下载视频文件到手机。");
+        $("saveFilePicker").classList.add("hidden"); $("videoFileLink").href = "#"; $("videoFileLink").setAttribute("aria-disabled", "true");
+        $("videoFileType").textContent = "视频"; $("videoFileName").textContent = "录制完成后生成文件"; $("videoFileMeta").textContent = "等待视频整理";
+        showSaveHelp("上方显示生成的视频文件。点文件卡片可下载到手机；也可用分享按钮发送。");
         $("toRecord").disabled = true; showStep(0);
       });
       if (/MicroMessenger/i.test(navigator.userAgent || "")) $("wechatNotice").classList.remove("hidden");
