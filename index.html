@@ -157,6 +157,12 @@
     .summary-ok { padding: 12px 13px; border-radius: 13px; background: #edf7f1; color: #3c6d58; font-size: 11px; line-height: 1.55; }
     .form-message { color: #a64b42; font-size: 11px; margin: 9px 0 0; min-height: 16px; }
     .smallprint { color: #8b9690; font-size: 9px; line-height: 1.5; margin-top: 12px; }
+    .browser-notice { padding: 10px 12px; border: 1px solid #f0d9a5; border-radius: 13px; color: #70521a; background: #fff8e8; font-size: 11px; line-height: 1.55; }
+    .save-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .save-actions button { width: 100%; margin-top: 8px; }
+    .save-actions #newCapture { grid-column: 1 / -1; }
+    .save-help { padding: 10px 12px; border-radius: 12px; background: #f6f8f5; color: #59665f; font-size: 11px; line-height: 1.55; margin-top: 10px; }
+    .save-help:empty { display: none; }
     .ref-list { display: grid; gap: 9px; }
     .ref-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px; text-decoration: none; background: #f8faf7; border: 1px solid #edf1ed; border-radius: 14px; }
     .ref-link:hover { border-color: #b8d2c6; }
@@ -214,7 +220,7 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">采</span><span>采集助手</span></div>
-      <div class="top-note"><span class="secure-dot"></span>录制素材保存在手机</div>
+      <div class="top-note"><span class="secure-dot"></span>录制暂存在本页</div>
     </header>
     <main class="layout">
       <section class="main-col">
@@ -223,6 +229,7 @@
           <h1>采一次，多场景复用。</h1>
           <p>一段连续口播 · 约 3 分钟 · 录完保存到相册</p>
         </section>
+        <div class="browser-notice hidden" id="wechatNotice" role="status">检测到微信内置浏览器。为确保能保存到手机，请先点右上角“⋯”→“在浏览器打开”，再从系统浏览器重新进入本页开始录制。视频暂存在当前页面，切换浏览器不会自动带过去。</div>
 
         <section class="card card-pad capture-step visible" id="stepPlan">
           <div class="section-head">
@@ -288,9 +295,12 @@
           <div class="review-stats"><div class="stat"><span>录制时长</span><strong id="finalDuration">—</strong></div><div class="stat"><span>文件大小</span><strong id="finalSize">—</strong></div><div class="stat"><span>素材状态</span><strong style="color:#28785e">已就绪</strong></div></div>
           <div class="summary-ok">✓ 一段连续素材已就绪</div>
           <button class="primary full" id="downloadVideo">保存到手机相册</button>
-          <button class="secondary full" id="downloadFile">保存到文件</button>
-          <button class="secondary full" id="newCapture">重新采集</button>
-          <div class="smallprint">系统打开保存菜单后，选择“存储视频”或“保存到相册”。</div>
+          <div class="save-actions">
+            <button class="secondary" id="openVideoPage">打开视频保存页</button>
+            <button class="secondary" id="downloadFile">下载到手机文件</button>
+            <button class="secondary" id="newCapture">重新采集</button>
+          </div>
+          <div class="save-help" id="saveHelp" role="status" aria-live="polite">优先打开手机系统分享菜单，请选择“存储视频”或“保存到照片/图库”。</div>
         </section>
       </section>
 
@@ -545,7 +555,8 @@
         $("recState").textContent = "正在整理素材";
       }
       function finishRecording() {
-        finalBlob = new Blob(chunks, { type: recorder?.mimeType || "video/webm" });
+        const recordedMime = chunks.find(chunk => chunk.type)?.type || recorder?.mimeType || "video/webm";
+        finalBlob = new Blob(chunks, { type: recordedMime });
         if (!finalBlob.size) { toast("没有录到视频内容，请重新采集"); releaseStream(); showStep(1); return; }
         if (blobUrl) URL.revokeObjectURL(blobUrl); blobUrl = URL.createObjectURL(finalBlob);
         $("reviewVideo").src = blobUrl;
@@ -565,22 +576,46 @@
       function downloadVideoFile() {
         if (!finalBlob || !blobUrl) return;
         const ext = finalBlob.type.includes("mp4") ? "mp4" : "webm";
-        const a = document.createElement("a"); a.href = blobUrl; a.download = `数字人采集素材_${new Date().toISOString().slice(0,10)}.${ext}`;
+        const a = document.createElement("a"); a.href = blobUrl; a.download = `数字人采集素材_${new Date().toISOString().slice(0,10)}.${ext}`; a.rel = "noopener";
         document.body.appendChild(a); a.click(); a.remove();
+      }
+      function showSaveHelp(message) { $("saveHelp").textContent = message; }
+      function isAppleMobile() {
+        const ua = navigator.userAgent || "";
+        return /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      }
+      function openVideoSavePage() {
+        if (!blobUrl) return;
+        const opened = window.open(blobUrl, "_blank");
+        if (opened) {
+          showSaveHelp(isAppleMobile() ? "视频已在新页面打开：点浏览器分享按钮，再选“存储视频”。保存后回到本页。" : "视频已在新页面打开：可长按视频选择保存；如果菜单没有保存选项，回到本页点“下载到手机文件”。");
+        } else {
+          downloadVideoFile();
+          showSaveHelp("浏览器拦截了新页面，已改为下载文件。请到浏览器“下载”或手机“文件管理”中找到素材，再选择保存到相册。");
+        }
       }
       $("downloadVideo").addEventListener("click", async () => {
         if (!finalBlob || !blobUrl) return;
         const ext = finalBlob.type.includes("mp4") ? "mp4" : "webm";
         const file = new File([finalBlob], `数字人采集素材_${new Date().toISOString().slice(0,10)}.${ext}`, { type: finalBlob.type || (ext === "mp4" ? "video/mp4" : "video/webm") });
         try {
-          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          const filesShareable = navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }));
+          if (filesShareable) {
             await navigator.share({ title: "数字人采集素材", files: [file] });
-            toast("请选择“存储视频”或“保存到相册”"); return;
+            showSaveHelp("已打开手机分享菜单，请选择“存储视频”或“保存到照片/图库”。分享完成后回到本页。"); toast("请选择保存到照片或图库"); return;
           }
-        } catch (e) { if (e.name === "AbortError") return; }
-        downloadVideoFile(); toast("已下载素材，请在手机下载项中保存到相册");
+        } catch (e) {
+          if (e.name === "AbortError") { showSaveHelp("分享菜单已关闭，视频仍在本页。可以重新点“保存到手机相册”，或用下方两种方式另存。"); return; }
+        }
+        const ua = navigator.userAgent || "";
+        const isWechat = /MicroMessenger/i.test(ua);
+        if (isAppleMobile() && !isWechat) { openVideoSavePage(); return; }
+        downloadVideoFile();
+        showSaveHelp(isWechat ? "微信内置浏览器可能拦截视频保存。若下载没有出现，请先在微信右上角“⋯”→“在浏览器打开”，再重新录制；已录制素材仍暂存在本页。" : "已尝试下载。请到浏览器“下载”或手机“文件管理”中找到视频，再选择保存到相册。");
+        toast("已尝试保存视频，请查看页面提示");
       });
-      $("downloadFile").addEventListener("click", () => { downloadVideoFile(); toast("已开始保存到手机文件"); });
+      $("openVideoPage").addEventListener("click", openVideoSavePage);
+      $("downloadFile").addEventListener("click", () => { downloadVideoFile(); showSaveHelp("已尝试下载文件。请在浏览器“下载”或手机“文件管理”中打开视频，再选择保存到相册。"); toast("已尝试下载视频文件"); });
       $("newCapture").addEventListener("click", () => {
         if (blobUrl) { URL.revokeObjectURL(blobUrl); blobUrl = null; }
         finalBlob = null; $("reviewVideo").removeAttribute("src"); $("stopRecord").disabled = true;
@@ -590,6 +625,7 @@
         ["faceConfirm", "consentConfirm"].forEach(id => $(id).checked = false);
         $("toRecord").disabled = true; showStep(0);
       });
+      if (/MicroMessenger/i.test(navigator.userAgent || "")) $("wechatNotice").classList.remove("hidden");
       window.addEventListener("pagehide", releaseStream);
     })();
   </script>
